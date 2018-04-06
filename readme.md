@@ -10,6 +10,7 @@ roslaunch
 * `<node pkg="depth_clustering" name="depth_clusterer" type="publish_clusters_node" output="screen"/>`
 
 #### other modifications/info ####
+* ignore empty pointcloud2 messages. This causes original version to crash.
 * (optional) num_beams and threshold_angle rosparams specify image clustering parameters
 * (optional) use pose message, instead of odometry message (also optional) for image projection reference frame
 * modify published cluster size max thresholding in CloudOdomRosPublisher::ImageToPcl
