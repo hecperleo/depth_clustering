@@ -1,5 +1,20 @@
 # Depth Clustering #
 
+### modified version that publishes pointcloud2 with obstacle clusters and labels ###
+
+#### run ####
+rosrun
+* `rosrun depth_custering publish_clusters_node`
+
+roslaunch
+* `<node pkg="depth_clustering" name="depth_clusterer" type="publish_clusters_node" output="screen"/>`
+
+#### other modifications/info ####
+* (optional) num_beams and threshold_angle rosparams specify image clustering parameters
+* (optional) use pose message, instead of odometry message (also optional) for image projection reference frame
+* modify published cluster size max thresholding in CloudOdomRosPublisher::ImageToPcl
+* see examples/ros_nodes/publish_clusters_node.cpp or examples/ros_nodes/show_objects_node.cpp for topic name parameters
+
 [![Build Status][travis-img]][travis-link]
 [![Codacy Badge][codacy-img]][codacy-link]
 [![Coverage Status][coveralls-img]][coveralls-link]
