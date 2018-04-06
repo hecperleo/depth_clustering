@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
       ' ', "1.0");
   TCLAP::ValueArg<int> angle_arg(
       "", "angle",
-      "Threshold angle. Below this value, the objects are separated", false, 10,
+      "Threshold angle. Below this value, the objects are separated", false, 5,
       "int");
   TCLAP::ValueArg<int> num_beams_arg(
       "", "num_beams", "Num of vertical beams in laser. One of: [16, 32, 64].",
@@ -79,9 +79,11 @@ int main(int argc, char* argv[]) {
   ros::init(argc, argv, "show_objects_node");
   ros::NodeHandle nh;
 
-  string topic_clouds = "/velodyne_points";
+  string topic_clouds = "/points_raw_map_crop";
 
-  CloudOdomRosSubscriber subscriber(&nh, *proj_params_ptr, topic_clouds);
+  string topic_pose = "/ndt_pose";
+
+  CloudOdomRosSubscriber subscriber(&nh, *proj_params_ptr, topic_clouds, "", topic_pose);
   Visualizer visualizer;
   visualizer.show();
 
