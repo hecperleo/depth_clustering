@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.8.12)
 project(depth_clustering)
+set( CMAKE_EXPORT_COMPILE_COMMANDS ON )
 
 include(DistVersion.cmake)
 system_info(DISTRO)
