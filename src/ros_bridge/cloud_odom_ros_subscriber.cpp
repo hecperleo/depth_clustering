@@ -109,7 +109,6 @@ void CloudOdomRosSubscriber::StartListeningToRos() {
         ApproximateTimePolicyPose(100), *_subscriber_clouds, *_subscriber_pose);
     _sync_pose->registerCallback(
         boost::bind(&CloudOdomRosSubscriber::CallbackPose, this, _1, _2));
-    ROS_ERROR("FUDGE");
   } else {
     _subscriber_clouds = new Subscriber<PointCloud2>(
         *_node_handle, _topic_clouds, _msg_queue_size);
