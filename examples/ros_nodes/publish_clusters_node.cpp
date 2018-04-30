@@ -19,15 +19,15 @@
 
 #include <string>
 
-#include "ros_bridge/cloud_odom_ros_subscriber.h"
 #include "ros_bridge/cloud_odom_ros_publisher.h"
+#include "ros_bridge/cloud_odom_ros_subscriber.h"
 
 #include "clusterers/image_based_clusterer.h"
 #include "ground_removal/depth_ground_remover.h"
 #include "projections/ring_projection.h"
 #include "projections/spherical_projection.h"
-#include "utils/radians.h"
 #include "tclap/CmdLine.h"
+#include "utils/radians.h"
 
 using std::string;
 
@@ -36,16 +36,16 @@ using namespace depth_clustering;
 using ClustererT = ImageBasedClusterer<LinearImageLabeler<>>;
 
 int main(int argc, char* argv[]) {
-  ros::init(argc, argv, "show_objects_node");
+  ros::init(argc, argv, "pub_objects_node");
   ros::NodeHandle nh;
 
-  int num_beams_arg = 16;
-  int angle_arg = 10;
+  int num_beams_arg = 32;
+  int angle_arg = 10;  // default 20
 
-  if(nh.hasParam("num_beams")){
+  if (nh.hasParam("num_beams")) {
     nh.getParam("num_beams", num_beams_arg);
   }
-  if(nh.hasParam("threshold_angle")){
+  if (nh.hasParam("threshold_angle")) {
     nh.getParam("threshold_angle", angle_arg);
   }
 
@@ -72,16 +72,18 @@ int main(int argc, char* argv[]) {
 
   QApplication application(argc, argv);
 
-  string sub_topic_clouds = "/points_raw_map_crop";
+  // string sub_topic_clouds = "/points_raw_map_crop";
+  string sub_topic_clouds = "/velodyne_points";
   string pub_topic_clouds = "/depth_clusterer/segmented_cloud";
-  string topic_pose = "/ndt_pose";
-  string pub_frame_id = "world";
+  // string topic_pose = "/ndt_pose";
+  string pub_frame_id = "velodyne";
 
-  CloudOdomRosSubscriber subscriber(&nh, *proj_params_ptr, sub_topic_clouds, "", topic_pose);
+  CloudOdomRosSubscriber subscriber(&nh, *proj_params_ptr,
+                                    sub_topic_clouds /*, "", topic_pose*/);
   CloudOdomRosPublisher publisher(&nh, pub_frame_id, pub_topic_clouds);
 
-  int min_cluster_size = 20;
-  int max_cluster_size = 100000;
+  int min_cluster_size = 100;     // min 100
+  int max_cluster_size = 100000;  // max 100000
 
   ClustererT clusterer(angle_tollerance, min_cluster_size, max_cluster_size);
   clusterer.SetDiffType(DiffFactory::DiffType::ANGLES);

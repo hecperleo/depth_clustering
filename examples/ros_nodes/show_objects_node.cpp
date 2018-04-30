@@ -79,15 +79,16 @@ int main(int argc, char* argv[]) {
   ros::init(argc, argv, "show_objects_node");
   ros::NodeHandle nh;
 
-  string topic_clouds = "/points_raw_map_crop";
+  //string topic_clouds = "/points_raw_map_crop";
+  string topic_clouds = "/velodyne_points";
 
-  string topic_pose = "/ndt_pose";
+  //string topic_pose = "/ndt_pose";
 
-  CloudOdomRosSubscriber subscriber(&nh, *proj_params_ptr, topic_clouds, "", topic_pose);
+  CloudOdomRosSubscriber subscriber(&nh, *proj_params_ptr, topic_clouds/*, "", topic_pose*/);
   Visualizer visualizer;
   visualizer.show();
 
-  int min_cluster_size = 20;
+  int min_cluster_size = 100;
   int max_cluster_size = 100000;
 
   int smooth_window_size = 7;

@@ -40,7 +40,7 @@ void DepthGroundRemover::OnNewObjectReceived(const Cloud& cloud,
   // this can be done even faster if we switch to column-major implementation
   // thus allowing us to load whole row in L1 cache
   if (!cloud.projection_ptr()) {
-    fprintf(stderr, "No projection in cloud. Skipping ground removal.\n");
+    //fprintf(stderr, "No projection in cloud. Skipping ground removal.\n");
     return;
   }
   Cloud cloud_copy(cloud);
@@ -51,7 +51,7 @@ void DepthGroundRemover::OnNewObjectReceived(const Cloud& cloud,
   auto smoothed_image = ApplySavitskyGolaySmoothing(angle_image, _window_size);
   auto no_ground_image = ZeroOutGroundBFS(depth_image, smoothed_image,
                                           _ground_remove_angle, _window_size);
-  fprintf(stderr, "INFO: Ground removed in %lu us\n", total_timer.measure());
+  //fprintf(stderr, "INFO: Ground removed in %lu us\n", total_timer.measure());
   cloud_copy.projection_ptr()->depth_image() = no_ground_image;
   this->ShareDataWithAllClients(cloud_copy);
   _counter++;
@@ -102,7 +102,7 @@ Mat DepthGroundRemover::ZeroOutGroundBFS(const cv::Mat& image,
   }
   auto label_image_ptr = image_labeler.GetLabelImage();
   if (label_image_ptr->rows != res.rows || label_image_ptr->cols != res.cols) {
-    fprintf(stderr, "ERROR: label image and res do not correspond.\n");
+    //fprintf(stderr, "ERROR: label image and res do not correspond.\n");
     return res;
   }
   kernel_size = std::max(kernel_size - 2, 3);
